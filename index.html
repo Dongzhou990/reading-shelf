@@ -2,128 +2,156 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>我的书房</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--fs:1;--bg:#f5f6f7;--surface:#ffffff;--surface2:#f0f2f4;--ink:#1f2329;--ink-soft:#8a9099;
+/* —— 设计令牌：微信读书风格的浅绿基调 + 深浅色 —— */
+:root{--fs:1;--bg:#f5f6f7;--surface:#ffffff;--surface2:#eef0f2;--ink:#1f2329;--ink-soft:#8a9099;
 --accent:#07c160;--accent-ink:#06ae56;--line:#e6e7ea;--line-strong:#d5d7db;--tip-bg:#1f2329;--tip-ink:#f5f6f7;
---shadow:0 1px 2px rgba(15,20,25,.05),0 8px 24px rgba(15,20,25,.08);
---font-ui:"Noto Sans SC",-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;
---font-body:"Spectral","Noto Serif SC",serif;color-scheme:light}
+--shadow:0 1px 2px rgba(15,20,25,.05),0 10px 26px rgba(15,20,25,.10);
+--shadow-card:0 1px 3px rgba(15,20,25,.06),0 6px 18px rgba(15,20,25,.07);
+--font-ui:-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",Roboto,"Noto Sans SC",sans-serif;
+--font-body:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",Georgia,"Times New Roman",serif;color-scheme:light}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#111418;--surface:#1a1e24;--surface2:#23282f;
 --ink:#e8eaed;--ink-soft:#9aa0a8;--accent:#07c160;--accent-ink:#2dd77e;--line:#2a2f37;--line-strong:#353b44;
---tip-bg:#f0f2f4;--tip-ink:#1f2329;--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.45);color-scheme:dark}}
+--tip-bg:#f0f2f4;--tip-ink:#1f2329;--shadow:0 1px 2px rgba(0,0,0,.4),0 12px 30px rgba(0,0,0,.45);
+--shadow-card:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.4);color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#111418;--surface:#1a1e24;--surface2:#23282f;--ink:#e8eaed;--ink-soft:#9aa0a8;
 --accent:#07c160;--accent-ink:#2dd77e;--line:#2a2f37;--line-strong:#353b44;--tip-bg:#f0f2f4;--tip-ink:#1f2329;
---shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.45);color-scheme:dark}}
-*{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-ui);-webkit-font-smoothing:antialiased}
+--shadow:0 1px 2px rgba(0,0,0,.4),0 12px 30px rgba(0,0,0,.45);
+--shadow-card:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.4);color-scheme:dark}}
+*{box-sizing:border-box}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-ui);-webkit-font-smoothing:antialiased;
+-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
+button{font-family:var(--font-ui);touch-action:manipulation}
+/* —— 阅读进度条 —— */
+#progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:60;pointer-events:none}
+#progressBar{height:100%;width:0;background:var(--accent);border-radius:0 2px 2px 0;box-shadow:0 0 6px var(--accent)}
 /* —— 书架 —— */
-.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);
-display:flex;align-items:center;gap:12px;padding:12px clamp(16px,4vw,28px);border-bottom:1px solid var(--line)}
-.topbar .brand{font-weight:700;font-size:19px;letter-spacing:.02em}
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);background:color-mix(in srgb,var(--bg) 90%,transparent);
+-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+display:flex;align-items:center;gap:12px;padding:calc(12px + env(safe-area-inset-top,0px)) clamp(16px,4vw,28px) 12px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;gap:9px}
+.brand .name{font-weight:800;font-size:20px;letter-spacing:.02em;color:var(--ink)}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);align-self:center}
+.brand .tag{font-size:11px;color:var(--ink-soft);letter-spacing:.18em}
 .topbar .spacer{flex:1}
-.iconbtn{width:34px;height:34px;border:none;border-radius:50%;background:transparent;color:var(--ink-soft);cursor:pointer;
-font-size:19px;line-height:1;display:flex;align-items:center;justify-content:center}
-.iconbtn:hover{background:var(--surface2);color:var(--ink)}
+.iconbtn{width:36px;height:36px;border:none;border-radius:50%;background:var(--surface);color:var(--ink-soft);cursor:pointer;
+font-size:20px;line-height:1;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);box-shadow:var(--shadow-card)}
+.iconbtn:active{transform:scale(.94);background:var(--surface2)}
 .search{padding:14px clamp(16px,4vw,28px) 0}
-.search input{width:100%;max-width:640px;display:block;margin:0 auto;background:var(--surface);border:1px solid var(--line);
-border-radius:12px;padding:10px 16px;font-size:14.5px;color:var(--ink);outline:none;font-family:var(--font-ui)}
-.search input:focus{border-color:var(--accent)}
-.tabs{display:flex;gap:6px;padding:16px clamp(16px,4vw,28px) 0;max-width:1080px;margin:0 auto}
+.search-box{max-width:640px;margin:0 auto;position:relative}
+.search-box svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink-soft);pointer-events:none}
+.search input{width:100%;display:block;background:var(--surface);border:1px solid var(--line);border-radius:14px;
+padding:11px 16px 11px 42px;font-size:15px;color:var(--ink);outline:none;font-family:var(--font-ui);
+-webkit-appearance:none;appearance:none}
+.search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(7,193,96,.14)}
+.tabs{display:flex;justify-content:center;gap:4px;padding:16px clamp(16px,4vw,28px) 0;max-width:1080px;margin:0 auto}
 .tab{border:none;background:transparent;color:var(--ink-soft);font-family:var(--font-ui);font-size:15px;cursor:pointer;
-padding:7px 14px;border-radius:999px;font-weight:500}
-.tab.active{background:var(--accent);color:#fff;font-weight:700}
-.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:22px 18px;
-padding:22px clamp(16px,4vw,28px) 60px;max-width:1080px;margin:0 auto}
-.book{cursor:pointer}
-.book .cover{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:var(--surface2);
-box-shadow:var(--shadow);border:1px solid var(--line)}
-.book .cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s}
-.book:hover .cover img{transform:scale(1.05)}
+padding:8px 16px;border-radius:999px;font-weight:500;transition:color .15s}
+.tab.active{background:var(--accent);color:#fff;font-weight:700;box-shadow:0 2px 8px rgba(7,193,96,.28)}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:24px 18px;
+padding:22px clamp(16px,4vw,28px) calc(60px + env(safe-area-inset-bottom,0px));max-width:1080px;margin:0 auto}
+.book{cursor:pointer;touch-action:manipulation}
+.book .cover{position:relative;aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:var(--surface2);
+box-shadow:var(--shadow-card);border:1px solid var(--line);transition:transform .15s}
+.book:active .cover{transform:scale(.96)}
+.book .cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+@media(hover:hover){.book:hover .cover img{transform:scale(1.06)}}
+.book .cover::after{content:"";position:absolute;inset:0;pointer-events:none;
+background:linear-gradient(90deg,rgba(0,0,0,.22) 0,rgba(0,0,0,.04) 16%,transparent 30%),linear-gradient(270deg,rgba(0,0,0,.05) 0,transparent 10%)}
+.badge{position:absolute;top:8px;right:8px;z-index:2;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;
+background:rgba(255,255,255,.93);color:var(--accent-ink);letter-spacing:.05em;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.badge.want{color:var(--ink-soft)}
 .book .cover-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:12px;
 text-align:center;font-family:var(--font-body);color:var(--ink-soft);font-size:15px}
-.book-title{margin:10px 2px 0;font-size:14.5px;font-weight:500;line-height:1.35;color:var(--ink);
+.book-title{margin:11px 2px 0;font-size:14.5px;font-weight:600;line-height:1.38;color:var(--ink);
 display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.book-sub{margin:3px 2px 0;font-size:12px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.empty{max-width:1080px;margin:60px auto;text-align:center;color:var(--ink-soft);font-size:15px}
+.book-sub{margin:3px 2px 0;font-size:11.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.empty{max-width:1080px;margin:70px auto;text-align:center;color:var(--ink-soft);font-size:15px}
+.empty::before{content:"";display:block;width:44px;height:44px;margin:0 auto 16px;border-radius:12px;
+background:var(--surface2);border:1px solid var(--line)}
 /* —— 阅读器 —— */
-.reader-top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);
-display:flex;align-items:center;gap:10px;padding:10px clamp(12px,3vw,22px);border-bottom:1px solid var(--line)}
+.reader-top{position:sticky;top:0;z-index:20;background:var(--bg);background:color-mix(in srgb,var(--bg) 92%,transparent);
+-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+display:flex;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top,0px)) clamp(12px,3vw,22px) 10px;border-bottom:1px solid var(--line)}
 .back{display:flex;align-items:center;gap:4px;border:none;background:transparent;color:var(--accent-ink);cursor:pointer;
-font-family:var(--font-ui);font-size:15px;font-weight:500;padding:6px 4px}
-.back:hover{opacity:.8}
-.reader-top .rtitle{flex:1;font-size:15px;font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
-.reader-top .gear{width:34px;height:34px;border:none;border-radius:50%;background:transparent;color:var(--ink-soft);cursor:pointer;
-font-size:14px;font-weight:700;font-family:var(--font-ui);display:flex;align-items:center;justify-content:center}
-.reader-top .gear:hover{background:var(--surface2);color:var(--ink)}
-.reader-body{max-width:880px;margin:0 auto;padding:0 clamp(16px,4vw,40px) 80px}
-.r-head{padding:34px 0 6px}
-.r-eyebrow{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-ink);font-weight:700}
-.r-head h1{font-family:var(--font-body);font-weight:700;font-size:calc(clamp(26px,5vw,44px) * var(--fs));line-height:1.18;margin:12px 0 8px;color:var(--ink)}
-.r-head h1 .en{display:block;font-size:.42em;font-weight:500;color:var(--ink-soft);letter-spacing:.1em;margin-top:8px}
+font-family:var(--font-ui);font-size:16px;font-weight:600;padding:7px 6px}
+.back:active{opacity:.6}
+.reader-top .rtitle{flex:1;font-size:15px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.reader-top .gear{width:36px;height:36px;border:none;border-radius:50%;background:var(--surface);color:var(--ink-soft);cursor:pointer;
+font-size:14px;font-weight:700;font-family:var(--font-ui);display:flex;align-items:center;justify-content:center;border:1px solid var(--line);box-shadow:var(--shadow-card)}
+.reader-top .gear:active{transform:scale(.94)}
+.reader-body{max-width:880px;margin:0 auto;padding:0 clamp(16px,4vw,40px) calc(80px + env(safe-area-inset-bottom,0px))}
+.r-head{padding:32px 0 6px}
+.r-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent-ink);font-weight:700}
+.r-head h1{font-family:var(--font-body);font-weight:700;font-size:calc(clamp(26px,5.5vw,44px) * var(--fs));line-height:1.18;margin:12px 0 8px;color:var(--ink)}
+.r-head h1 .en{display:block;font-size:.4em;font-weight:500;color:var(--ink-soft);letter-spacing:.08em;margin-top:8px}
 .r-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .chip{font-size:calc(12px * var(--fs));color:var(--ink-soft);border:1px solid var(--line-strong);border-radius:999px;
 padding:4px 11px;background:var(--surface)}
 .r-hint{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);
-border-radius:12px;padding:11px 14px;margin:20px 0 6px;font-size:calc(13.5px * var(--fs));color:var(--ink-soft)}
+border-radius:12px;padding:12px 14px;margin:20px 0 6px;font-size:calc(13px * var(--fs));color:var(--ink-soft)}
 .r-hint .spacer{flex:1}
 .btn{font-size:calc(12.5px * var(--fs));letter-spacing:.05em;cursor:pointer;color:#fff;background:var(--accent);border:none;
-border-radius:8px;padding:7px 14px;font-family:var(--font-ui)}
-.btn:hover{background:var(--accent-ink)}
-.r-scenes{display:grid;gap:30px;margin-top:22px}
-.scene{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
-.scene-head{display:flex;align-items:baseline;gap:12px;padding:16px 20px 12px;border-bottom:1px solid var(--line)}
-.scene-no{font-weight:700;font-size:calc(20px * var(--fs));color:var(--accent-ink);min-width:30px}
+border-radius:9px;padding:8px 15px;font-family:var(--font-ui);box-shadow:0 2px 8px rgba(7,193,96,.26)}
+.btn:active{background:var(--accent-ink)}
+.r-scenes{display:grid;gap:26px;margin-top:22px}
+.scene{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-card)}
+.scene-head{display:flex;align-items:baseline;gap:11px;padding:15px 20px 12px;border-bottom:1px solid var(--line)}
+.scene-no{font-weight:700;font-size:calc(20px * var(--fs));color:var(--accent-ink);min-width:28px}
 .scene-title{font-family:var(--font-body);font-weight:600;font-size:calc(18px * var(--fs));margin:0;flex:1;color:var(--ink)}
-.timecode{font-size:calc(12px * var(--fs));color:var(--ink-soft);background:var(--surface2);border:1px solid var(--line);
-border-radius:6px;padding:2px 8px;font-variant-numeric:tabular-nums}
+.timecode{font-size:calc(11.5px * var(--fs));color:var(--ink-soft);background:var(--surface2);border:1px solid var(--line);
+border-radius:6px;padding:2px 8px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .frame{margin:0;background:var(--surface2)}
 .frame img{display:block;width:100%;height:auto;border-bottom:1px solid var(--line)}
-.lines{padding:14px 20px 18px}
-.line{padding:9px 0;border-bottom:1px dashed var(--line);cursor:pointer}
+.lines{padding:12px 20px 16px}
+.line{padding:10px 0;border-bottom:1px dashed var(--line);cursor:pointer;touch-action:manipulation;-webkit-touch-callout:none}
 .line:hover{background:var(--surface2)}
 .line:last-child{border-bottom:none}
 .en{font-family:var(--font-body);font-size:calc(16.5px * var(--fs));font-weight:500;color:var(--ink);margin:0}
-.zh{display:none;font-family:var(--font-body);font-size:calc(15px * var(--fs));color:var(--ink-soft);margin:5px 0 0;padding-left:22px}
+.zh{display:none;font-family:var(--font-body);font-size:calc(15px * var(--fs));color:var(--ink-soft);margin:6px 0 0;padding-left:20px}
 .line.show .zh{display:block}
 /* —— 设置面板 —— */
-.panel{position:fixed;right:14px;top:54px;z-index:30;background:var(--surface);border:1px solid var(--line-strong);
-border-radius:14px;box-shadow:var(--shadow);padding:14px 16px;display:grid;gap:14px;min-width:224px}
+.panel{position:fixed;right:12px;top:calc(60px + env(safe-area-inset-top,0px));z-index:40;background:var(--surface);border:1px solid var(--line-strong);
+border-radius:16px;box-shadow:var(--shadow);padding:15px 16px;display:grid;gap:15px;min-width:230px}
 .panel-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .panel-label{flex:0 0 100%;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);font-weight:700}
 .fsbtn,.themebtn{font-size:13px;color:var(--ink);background:var(--surface2);border:1px solid var(--line-strong);
-border-radius:8px;padding:6px 12px;cursor:pointer;font-family:var(--font-ui)}
-.fsbtn:hover,.themebtn:hover{border-color:var(--accent);color:var(--accent-ink)}
+border-radius:8px;padding:7px 13px;cursor:pointer;font-family:var(--font-ui)}
+.fsbtn:active,.themebtn:active{background:var(--line)}
 .fsval{min-width:46px;text-align:center;font-variant-numeric:tabular-nums;color:var(--ink);font-size:13px}
 .themebtn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 /* —— 词典气泡 —— */
-#wordtip{position:fixed;z-index:40;max-width:280px;background:var(--tip-bg);color:var(--tip-ink);border-radius:10px;
-box-shadow:0 8px 30px rgba(0,0,0,.35);padding:11px 14px 12px;font-family:var(--font-body);font-size:calc(15px * var(--fs));
+#wordtip{position:fixed;z-index:50;max-width:290px;background:var(--tip-bg);color:var(--tip-ink);border-radius:12px;
+box-shadow:0 10px 34px rgba(0,0,0,.38);padding:12px 15px 13px;font-family:var(--font-body);font-size:calc(15px * var(--fs));
 line-height:1.5;display:none}
 #wordtip .w{font-weight:700;font-size:calc(16px * var(--fs));display:block;margin-bottom:3px}
 #wordtip .d{opacity:.92}
-#wordtip .close{position:absolute;top:6px;right:9px;font-size:15px;line-height:1;cursor:pointer;opacity:.6;padding:2px}
-#toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%);background:var(--tip-bg);color:var(--tip-ink);
-border-radius:10px;padding:10px 16px;font-size:14px;z-index:50;opacity:0;transition:opacity .2s;pointer-events:none}
-@media(max-width:520px){.shelf{grid-template-columns:repeat(3,1fr);gap:16px 12px}.reader-body{padding:0 14px 60px}
-.scene-head{padding:13px 14px 10px}.lines{padding:11px 14px 15px}.en{font-size:calc(15px * var(--fs))}.zh{font-size:calc(14px * var(--fs));padding-left:0}}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+#wordtip .close{position:absolute;top:7px;right:10px;font-size:15px;line-height:1;cursor:pointer;opacity:.55;padding:2px}
+#toast{position:fixed;left:50%;bottom:calc(32px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--tip-bg);color:var(--tip-ink);
+border-radius:12px;padding:11px 18px;font-size:14px;z-index:55;opacity:0;transition:opacity .2s;pointer-events:none;max-width:86vw;text-align:center}
+@media(max-width:520px){.shelf{grid-template-columns:repeat(3,1fr);gap:18px 12px}.reader-body{padding:0 14px calc(60px + env(safe-area-inset-bottom,0px))}
+.scene-head{padding:12px 14px 10px}.lines{padding:10px 14px 14px}.en{font-size:calc(15.5px * var(--fs))}.zh{font-size:calc(14.5px * var(--fs));padding-left:0}
+.r-head{padding:24px 0 4px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.book:active .cover,.book:hover .cover img{transform:none}}
 </style>
 </head>
 <body>
 
+<div id="progress"><div id="progressBar"></div></div>
+
 <div id="shelfView">
   <header class="topbar">
-    <div class="brand">我的书房</div>
+    <div class="brand"><span class="dot"></span><span class="name">我的书房</span><span class="tag">阅读笔记</span></div>
     <div class="spacer"></div>
     <button class="iconbtn" id="addBtn" title="添加资料" aria-label="添加资料">＋</button>
   </header>
-  <div class="search"><input id="searchInput" type="search" placeholder="搜索书名 / 标题"></div>
+  <div class="search"><div class="search-box">
+    <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="searchInput" type="search" placeholder="搜索书名 / 标题">
+  </div></div>
   <nav class="tabs">
     <button class="tab active" data-tab="all">全部</button>
     <button class="tab" data-tab="read">已读</button>
@@ -168,6 +196,7 @@ let DICT = {};
 let activeTab = 'all';
 let query = '';
 let fsScale = 1;
+const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
@@ -183,8 +212,9 @@ function renderShelf(){
   });
   shelf.innerHTML = list.map(function(b){
     const cover = b.scenes && b.scenes[0] ? b.scenes[0].img : '';
+    const badge = b.status === 'want' ? '<span class="badge want">想读</span>' : (b.status === 'read' ? '<span class="badge">已读</span>' : '');
     return '<div class="book" data-id="' + b.id + '">'
-      + '<div class="cover">' + (cover ? '<img src="' + cover + '" alt="' + esc(b.title) + '" loading="lazy">' : '<div class="cover-empty">' + esc(b.title) + '</div>') + '</div>'
+      + '<div class="cover">' + (cover ? '<img src="' + cover + '" alt="' + esc(b.title) + '" loading="lazy">' : '<div class="cover-empty">' + esc(b.title) + '</div>') + badge + '</div>'
       + '<div class="book-title">' + esc(b.title) + '</div>'
       + '<div class="book-sub">' + esc(b.title_en || '') + '</div>'
       + '</div>';
@@ -225,7 +255,7 @@ function openBook(id){
     '<div class="r-head"><div class="r-eyebrow">阅读笔记</div>'
     + '<h1>' + esc(b.title) + '<span class="en">' + esc(b.title_en||'') + '</span></h1>'
     + '<div class="r-meta">' + (b.chips||[]).map(function(c){ return '<span class="chip">' + c + '</span>'; }).join('') + '</div></div>'
-    + '<div class="r-hint"><span>单击句子显示中文 · 双击单词查释义</span><span class="spacer"></span><button class="btn" id="toggleAll">展开全部翻译</button></div>'
+    + '<div class="r-hint"><span>点击句子显示中文 · 双击或长按单词查释义</span><span class="spacer"></span><button class="btn" id="toggleAll">展开全部翻译</button></div>'
     + '<div class="r-scenes">' + scenes + '</div>';
   document.getElementById('toggleAll').addEventListener('click', function(){
     const lines = body.querySelectorAll('.line');
@@ -236,11 +266,13 @@ function openBook(id){
   });
   document.getElementById('shelfView').hidden = true;
   document.getElementById('readerView').hidden = false;
+  document.getElementById('progressBar').style.width = '0';
   window.scrollTo(0, 0);
 }
 document.getElementById('backBtn').addEventListener('click', function(){
   document.getElementById('readerView').hidden = true;
   document.getElementById('shelfView').hidden = false;
+  document.getElementById('progressBar').style.width = '0';
   hideDict();
   document.getElementById('settingsPanel').hidden = true;
 });
@@ -265,23 +297,43 @@ function lookup(word){
   for(const t of tries){ if(DICT[t]) return DICT[t]; }
   return null;
 }
+function charAt(x, y){
+  if(document.caretPositionFromPoint){
+    const p = document.caretPositionFromPoint(x, y);
+    if(p && p.offsetNode && p.offsetNode.nodeType === 3) return {node:p.offsetNode, offset:p.offset};
+  }
+  if(document.caretRangeFromPoint){
+    const r = document.caretRangeFromPoint(x, y);
+    if(r && r.startContainer && r.startContainer.nodeType === 3) return {node:r.startContainer, offset:r.startOffset};
+  }
+  const el = document.elementFromPoint(x, y);
+  if(!el) return null;
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  let n;
+  while((n = walker.nextNode())){
+    const text = n.nodeValue;
+    for(let i = 0; i < text.length; i++){
+      const r = document.createRange(); r.setStart(n, i); r.setEnd(n, i + 1);
+      const rect = r.getBoundingClientRect();
+      if(x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) return {node:n, offset:i};
+    }
+  }
+  return null;
+}
 function wordAtPoint(x, y){
-  let range = null;
-  if(document.caretRangeFromPoint){ range = document.caretRangeFromPoint(x, y); }
-  else if(document.caretPositionFromPoint){
-    const pos = document.caretPositionFromPoint(x, y);
-    if(pos){ range = document.createRange(); range.setStart(pos.offsetNode, pos.offset); range.collapse(true); }
+  let word = '';
+  const sel = window.getSelection(); if(sel) word = sel.toString().trim();
+  if(!word){
+    const hit = charAt(x, y);
+    if(hit){
+      const text = hit.node.nodeValue;
+      const isWordChar = function(ch){ return /[A-Za-z'’-]/.test(ch); };
+      let s = hit.offset, e = hit.offset;
+      while(s > 0 && isWordChar(text[s-1])) s--;
+      while(e < text.length && isWordChar(text[e])) e++;
+      word = text.slice(s, e).trim();
+    }
   }
-  let word = null;
-  if(range && range.startContainer && range.startContainer.nodeType === 3){
-    const text = range.startContainer.textContent, offset = range.startOffset;
-    const isWordChar = function(ch){ return /[A-Za-z'’-]/.test(ch); };
-    let s = offset, e2 = offset;
-    while(s > 0 && isWordChar(text[s-1])) s--;
-    while(e2 < text.length && isWordChar(text[e2])) e2++;
-    word = text.slice(s, e2).trim();
-  }
-  if(!word){ const sel = window.getSelection(); if(sel && sel.toString().trim()) word = sel.toString().trim(); }
   if(!word) return null;
   return word.replace(/[’]/g, "'").replace(/[^A-Za-z'-]/g, '') || null;
 }
@@ -301,31 +353,70 @@ function showDict(word){
     if(y + th > window.innerHeight - 8){ y = rect.top - th - 8; }
     x = Math.max(8, Math.min(x, window.innerWidth - tw - 8));
     tip.style.left = x + 'px'; tip.style.top = y + 'px'; tip.style.transform = 'none';
-  } else { tip.style.left = '50%'; tip.style.transform = 'translateX(-50%)'; tip.style.top = '20%'; }
+  } else { tip.style.left = '50%'; tip.style.transform = 'translateX(-50%)'; tip.style.top = '22%'; }
 }
 function hideDict(){ document.getElementById('wordtip').style.display = 'none'; }
 
-/* —— 行交互（单击翻译 / 双击查词） —— */
-let clickTimer = null;
-document.getElementById('readerBody').addEventListener('click', function(e){
+/* —— 行交互：单击显中文 / 双击或长按查词 —— */
+const readerBody = document.getElementById('readerBody');
+let clickTimer = null, pressTimer = null, touchStart = null, touchMoved = false, longPressed = false;
+
+readerBody.addEventListener('click', function(e){
+  if(isTouch) return; // 触屏走 touchend，避免重复触发
   const line = e.target.closest('.line');
   if(!line) return;
   if(clickTimer){ clearTimeout(clickTimer); clickTimer = null; return; }
   clickTimer = setTimeout(function(){ clickTimer = null; line.classList.toggle('show'); }, 260);
 });
-document.getElementById('readerBody').addEventListener('dblclick', function(e){
+readerBody.addEventListener('dblclick', function(e){
   const line = e.target.closest('.line');
   if(!line) return;
   if(clickTimer){ clearTimeout(clickTimer); clickTimer = null; }
-  let w = '';
-  const sel = window.getSelection(); if(sel) w = sel.toString().trim();
-  if(!w) w = wordAtPoint(e.clientX, e.clientY);
+  const w = wordAtPoint(e.clientX, e.clientY);
   if(w) showDict(w);
 });
+readerBody.addEventListener('touchstart', function(e){
+  if(!isTouch) return;
+  const line = e.target.closest('.line');
+  if(!line){ touchStart = null; return; }
+  const t = e.touches[0];
+  touchStart = {x:t.clientX, y:t.clientY, line:line};
+  touchMoved = false; longPressed = false;
+  pressTimer = setTimeout(function(){
+    longPressed = true;
+    const w = wordAtPoint(touchStart.x, touchStart.y);
+    if(w) showDict(w);
+  }, 500);
+}, {passive:true});
+readerBody.addEventListener('touchmove', function(e){
+  if(!touchStart) return;
+  const t = e.touches[0];
+  if(Math.abs(t.clientX - touchStart.x) > 10 || Math.abs(t.clientY - touchStart.y) > 10){
+    touchMoved = true;
+    if(pressTimer){ clearTimeout(pressTimer); pressTimer = null; }
+  }
+}, {passive:true});
+readerBody.addEventListener('touchend', function(){
+  if(!touchStart) return;
+  if(pressTimer){ clearTimeout(pressTimer); pressTimer = null; }
+  const line = touchStart.line, wasLong = longPressed, moved = touchMoved;
+  touchStart = null;
+  if(moved || wasLong) return;
+  if(line) line.classList.toggle('show');
+});
+
 document.getElementById('tipClose').addEventListener('click', hideDict);
 document.addEventListener('click', function(e){ const t = document.getElementById('wordtip'); if(!t.contains(e.target)) hideDict(); });
 document.addEventListener('keydown', function(e){ if(e.key === 'Escape') hideDict(); });
-window.addEventListener('scroll', hideDict, {passive:true});
+window.addEventListener('scroll', function(){
+  hideDict();
+  const bar = document.getElementById('progressBar');
+  const body = readerBody;
+  if(document.getElementById('readerView').hidden || !body.scrollHeight) { return; }
+  const total = body.scrollHeight - window.innerHeight;
+  const pct = total > 0 ? (window.scrollY / total) * 100 : 0;
+  bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+}, {passive:true});
 
 /* —— 阅读设置 —— */
 const FS_MIN = 0.85, FS_MAX = 1.5, FS_STEP = 0.1;
